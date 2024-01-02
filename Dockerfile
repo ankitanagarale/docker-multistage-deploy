@@ -1,10 +1,9 @@
-FROM maven as maven
-RUN mkdir /usr/src/mymaven
+FROM maven:3.8-jdk-11 AS builder
 WORKDIR /usr/src/mymaven
 COPY . .
 RUN mvn install -DskipTests
 
-FROM tomcat 
-WORKDIR webapps 
-COPY --from=maven /usr/src/mymaven/target/java-tomcat-maven-example.war .
-RUN rm -rf ROOT && mv java-tomcat-maven-example.war ROOT.war
+FROM tomcat:9-jdk11-openjdk-slim
+WORKDIR /usr/local/tomcat/webapps
+COPY --from=builder /usr/src/mymaven/target/java-tomcat-maven-example.war ROOT.war
+
