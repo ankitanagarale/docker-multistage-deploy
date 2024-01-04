@@ -1,3 +1,4 @@
+#without multistage like it has size larger than multistage image 
 FROM maven:3.8-jdk-11 AS builder
 WORKDIR /usr/src/mymaven
 COPY . .
